@@ -1,0 +1,56 @@
+# variables:
+- group: shiftleft-token
+
+steps:
+- ${{ if or(contains(variables['Build.SourceBranch'], 'main'), contains(variables['Build.SourceBranch'], 'master'), contains(variables['Build.SourceBranch'], 'dev'), contains(variables['Build.SourceBranch'], 'release')) }}:
+  - task: CmdLine@2
+    displayName: Download Qwiet cli
+    
+    inputs:
+      targetType: 'inline'
+      script: |
+        curl https://cdn.shiftleft.io/download/sl > $(Agent.HomeDirectory)/sl && chmod a+rx $(Agent.HomeDirectory)/sl
+
+  - task: CmdLine@2
+    displayName: Analyze with preZero
+    
+    inputs:
+      targetType: 'inline'
+      script: |
+        $(Agent.HomeDirectory)/sl analyze --app $(Build.Repository.Name) --wait --tag branch=$(Build.SourceBranchName)  . \ 
+      workingDirectory: '$(Build.SourcesDirectory)'
+    env:
+      SHIFTLEFT_ACCESS_TOKEN: $(SHIFTLEFT_ACCESS_TOKEN)
+      QWIET_ENABLE_MULTI_LANGUAGE_ANALYSIS: true
+
+  # - task: UsePythonVersion@0
+  #   inputs:
+  #     versionSpec: '3.x'
+  #     addToPath: true
+
+  - task: CmdLine@2
+    displayName: Export Report
+    inputs:
+      script: |
+        pip3 install requests json2xml rich pyjwt joern2sarif pytest_httpserver httpx[http2] dask dask[array] PyGitHub packaging pdfkit  
+        python3 bestfix.py --all-ratings -a $(Build.Repository.Name)
+
+    env:
+      SHIFTLEFT_ACCESS_TOKEN: $(SHIFTLEFT_ACCESS_TOKEN)
+      QWIET_ENABLE_MULTI_LANGUAGE_ANALYSIS: true
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish SAST result'
+    inputs: 
+  # pathToPublish: '$(Pipeline.Workspace)/s/ngsast-bestfix-report.html' 
+      pathToPublish: '$(Pipeline.Workspace)/s/ngsast-bestfix-$(Build.Repository.Name).html' 
+      artifactName: 'ngsast-bestfix-report.html'
+
+  - task: CmdLine@2
+    displayName: Validate Build Rules
+    inputs:
+      script: |
+        $(Agent.HomeDirectory)/sl check-analysis --v2 --app $(Build.Repository.Name) --config $(Build.SourcesDirectory)/shiftleft.yml 
+    env:
+      SHIFTLEFT_ACCESS_TOKEN: $(SHIFTLEFT_ACCESS_TOKEN)
+      QWIET_ENABLE_MULTI_LANGUAGE_ANALYSIS: true

@@ -1,0 +1,38 @@
+{
+    "manifestVersion": 1,
+    "id": "static-application-security-testing",
+    "name": "Static Application Security Testing",
+    "version": "1.0.5",
+    "publisher": "ZFFriedrichshafenAG",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Task for incorporating QwietAI SAST into ADO Pipelines",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/sast-img.png"        
+    },
+    "files": [
+        {
+            "path": "sast.yml",
+            "addressable": true,
+            "contentType": "text/plain"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "sast",
+            "type": "ms.azure-pipelines.pipeline-decorator",
+            "targets": [
+                "ms.azure-pipelines-agent-job.post-job-tasks"
+            ],
+            "properties": {
+                "template": "sast.yml"
+            }
+        }
+    ]
+}
