@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#This script should be run on the hackers host machine from where they intend to remotely access the victim system.
+#This script should be run on the hacker's host machine from where they intend to remotely access the victim system.
 
 import socket, json, base64, subprocess, sys, time
 
