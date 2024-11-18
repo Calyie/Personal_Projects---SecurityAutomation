@@ -1,6 +1,7 @@
-#Install the Trivy ADO extension. https://marketplace.visualstudio.com/items?itemName=AquaSecurityOfficial.trivy-official
-#I recommend forking a version 
-#container scanning task within Azure DevOps
+# Install the Trivy ADO extension. https://marketplace.visualstudio.com/items?itemName=AquaSecurityOfficial.trivy-official
+# It is recommended forking and then cloning a version of Trivy. That way, you could patch and recompile a version of the extension that can be privately managed. 
+
+# Container scanning task within Azure DevOps
 trigger:
 - main
 - master
@@ -15,7 +16,7 @@ steps:
   inputs:
     version: 'latest'
     path: '.'
-    severities: 'CRITICAL,HIGH,MEDIUM'
+    severities: 'CRITICAL,HIGH,MEDIUM' #depending on your org's security policies
     ignoreUnfixed: true
     exitCode: '0'
     options: '--scanners vuln,misconfig,secret'
