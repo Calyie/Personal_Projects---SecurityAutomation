@@ -1,0 +1,52 @@
+trigger: none  # No CI trigger
+
+parameters:
+  - name: targetUrl
+    type: string
+    default: https://example.com
+    displayName: Insert target; this should be a full url as shown below e.g.,
+
+jobs:
+- job: RunZAPScan
+  displayName: 'Run ZAP Scan'
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - script: |
+      docker pull ghcr.io/zaproxy/zaproxy:stable
+      docker pull zaproxy/zap-stable 
+      chmod -R 777 ./
+      docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py -t ${{ parameters.targetUrl }} -g gen.conf -x OWASP-ZAP-Report.xml -r scan-report.html
+      true
+    displayName: 'Run ZAP Scan'
+
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $XslPath = “$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)/OWASPToNUnit3.xslt”
+        $XmlInputPath = “$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)/OWASP-ZAP-Report.xml”
+        $XmlOutputPath = “$($Env:SYSTEM_DEFAULTWORKINGDIRECTORY)/Converted-OWASP-ZAP-Report.xml”
+        $XslTransform = New-Object System.Xml.Xsl.XslCompiledTransform
+        $XslTransform.Load($XslPath)
+        $XslTransform.Transform($XmlInputPath, $XmlOutputPath)
+
+  - task: CopyFiles@2
+    displayName: 'Copy DAST reports to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: |
+        scan-report.html
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: DastReports'
+    inputs:
+      ArtifactName: DastReports
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: 'Converted-OWASP-ZAP-Report.xml'
