@@ -1,3 +1,5 @@
+#Install the Trivy ADO extension. https://marketplace.visualstudio.com/items?itemName=AquaSecurityOfficial.trivy-official
+#I recommend forking a version 
 #container scanning task within Azure DevOps
 trigger:
 - main
