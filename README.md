@@ -17,8 +17,8 @@ Using the hacker machine (listener) to access the victim machine (backdoor), the
 1. All Linux and Windows OS commands (based on the victim machine's OS) such as cd, dir, ls, cat, etc.
 2. Upload function allows you to upload files (e.g., malware) into the backdoor... <br)>
 Syntax: <br>
->> upload <filename> <br>
+>> upload [filename] <br>
 Important: Ensure that the file you are uploading is in the same directory where you have executed the listener.py script
 3. Download function allows you to exfiltrate files from the backdoor... <br>
 Syntax: <br>
->> download <filename>
+>> download [filename]
