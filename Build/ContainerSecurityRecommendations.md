@@ -5,7 +5,7 @@ Recommended list of trusted suppliers:
 1. Enforcing trusted registries
  
 # Signing Containers:
-1. Image Signing with WIZ  
+1. Image Signing with Notation  
 2. Using SigStore
    
 # Breaking the build:
